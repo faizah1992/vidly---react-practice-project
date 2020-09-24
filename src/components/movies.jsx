@@ -2,12 +2,20 @@ import React, { Component } from 'react';
 import { getMovies } from '../services/fakeMovieService'
 import Like from "./common/like"
 import Pagination from './common/pagination'
+import { paginate } from  '../utils/paginate'
+import ListGroup from './common/listGroup'
+import { getGenres } from '../services/fakeGenreService'
 
 class Movies extends Component {
     state = { 
-        movies: getMovies(),
-        pageSize: 4,
-        currentPage: 1
+        movies: [],
+        pageSize: 3,
+        currentPage: 1,
+        genres: []
+    }
+
+    componentDidMount(){
+        this.setState({ movies: getMovies(), genres: getGenres() })
     }
 
     handleDelete = (movie) => {
@@ -27,17 +35,29 @@ class Movies extends Component {
         this.setState({ currentPage: page })
     }
 
+    handlGenreSelect = genre => {
+
+    }
+
     
     render() { 
         // const { length: count } = this.state.movies
         if (this.state.movies.length === 0)
         return <p>there are no movies in the database.</p>
+        const movies = paginate(this.state.movies, this.state.currentPage, this.state.pageSize)
 
         return ( 
-            <div>
-           <p>Showing {this.state.movies.length} movies in the database.</p>
-           <table className="table">
-               <thead>
+           <div className='row'>
+                <div className="col-3">
+                   <ListGroup items={this.state.genres} 
+                   onItemSelect={this.handlGenreSelect}
+                   textProperty='name'
+                   valueProperty="_id"/>
+                </div>
+                <div className="col">
+                <p>Showing {this.state.movies.length} movies in the database.</p>
+                <table className="table">
+                <thead>
                    <tr>
                        <th>Title</th>
                        <th>Genre</th>
@@ -60,10 +80,16 @@ class Movies extends Component {
                             <td><button onClick= {() => this.handleDelete(movie)} className="btn btn-danger btn-sm">Delete</button></td>
                         </tr>
                    ))}
-               </tbody>
-           </table>
-           <Pagination itemsCount={this.state.movies.length} pageSize={this.state.pageSize} onPageChange={this.handlePageChange} currentPage={this.state.currentPage}/>
-           </div>
+                </tbody>
+                </table>
+                <Pagination 
+                    itemsCount={this.state.movies.length} 
+                    pageSize={this.state.pageSize} 
+                    currentPage={this.state.currentPage}
+                    onPageChange={this.handlePageChange} 
+                />
+                </div>
+            </div>
         );
     }
 }
