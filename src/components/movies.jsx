@@ -7,13 +7,15 @@ import ListGroup from './common/listGroup'
 import Like from './common/like'
 import { getGenres } from '../services/fakeGenreService'
 import _ from 'lodash'
-
+import SearchBox from './seachBox'
 class Movies extends Component {
     state = { 
         movies: [],
         pageSize: 4,
         currentPage: 1,
         genres: [],
+        selectedGenre: null,
+        seachQuery: "",
         sortColumn: { path: 'title', order: 'asc' }
     }
 
@@ -40,7 +42,11 @@ class Movies extends Component {
     }
 
     handlGenreSelect = genre => {
-        this.setState({ selectedGenre: genre, currentPage: 1 })
+        this.setState({ selectedGenre: genre, seachQuery= "", currentPage: 1 })
+    }
+
+    handleSearch = query => {
+        this.setState({seachQuery: query, selectedGenre: null,  currentPage: 1 })
     }
 
     handleSort = sortColumn => {
@@ -52,11 +58,18 @@ class Movies extends Component {
             pageSize,
             currentPage,
             selectedGenre,
+            seachQuery,
             movies: allMovies,
             sortColumn
         } = this.state
 
-        const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id) : allMovies
+        const filtered = allMovies
+        if(seachQuery)
+        filtered = allMovies.filter(m =>
+            m.title.toLowerCase().startsWith(seachQuery.toLowerCase())
+        )
+            else if (selectedGenre && selectedGenre._id)
+            filtered = allMovies.filter(m => m.genre._id === selectedGenre._id)
 
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
 
@@ -95,6 +108,7 @@ class Movies extends Component {
                     New Movie
                 </Like>
                 <p>Showing {totalCount} movies in the database.</p>
+                <SeachBox value={seachQuery} onChange={this.handleSearch}/>
                 <MoviesTable 
                  movies={movies}
                  onLike={this.handleLike} 
