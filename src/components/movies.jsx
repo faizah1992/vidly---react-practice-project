@@ -4,6 +4,7 @@ import MoviesTable from './moviesTable'
 import Pagination from './common/pagination'
 import { paginate } from  '../utils/paginate'
 import ListGroup from './common/listGroup'
+import Like from './common/like'
 import { getGenres } from '../services/fakeGenreService'
 import _ from 'lodash'
 
@@ -86,6 +87,13 @@ class Movies extends Component {
                    onItemSelect={this.handlGenreSelect}/>
                 </div>
                 <div className="col">
+                <Like
+                    to="/movies/new"
+                    className="btn btn-primary"
+                    style={{marginBotton: 20}}
+                >
+                    New Movie
+                </Like>
                 <p>Showing {totalCount} movies in the database.</p>
                 <MoviesTable 
                  movies={movies}
