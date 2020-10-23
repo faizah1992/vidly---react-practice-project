@@ -9,12 +9,15 @@ import Rentals from './components/rentals'
 import NotFound from './components/notFound'
 import LoginForm from './components/loginForm'
 import RegisterForm from './components/registerForm'
+import { Toastcontainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   return (
     <main className='container'>
       <React.Fragment>
       {/* <Movies/> */}
+      <Toastcontainer/>
       <NavBar />
       <Switch>
         <Route path="/register" component={RegisterForm}/>
