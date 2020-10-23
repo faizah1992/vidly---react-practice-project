@@ -5,7 +5,7 @@ import Pagination from './common/pagination'
 import { paginate } from  '../utils/paginate'
 import ListGroup from './common/listGroup'
 import Like from './common/like'
-import { getGenres } from '../services/fakeGenreService'
+import { getGenres } from '../services/genreService'
 import _ from 'lodash'
 import SearchBox from './seachBox'
 class Movies extends Component {
