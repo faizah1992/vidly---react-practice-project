@@ -1,7 +1,3 @@
-import httpService from "./httpService";
-
-const { func } = require("prop-types");
-
 import http from './httpService'
 
 const apiEndPoint = 'http://localhost:3900/api/movies'
