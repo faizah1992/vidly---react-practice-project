@@ -1,6 +1,7 @@
 import http from './httpService'
+import  { apiUrl } from '../config.json'
 
 export function getGenres() {
-   http.get('http://localhost:3900/api/genres')
+   return http.get(config.apiUrl + "/genres")
 }
   
